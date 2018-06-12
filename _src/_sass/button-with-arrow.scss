@@ -1,0 +1,89 @@
+@mixin arrow(
+		$arrowDisplay: flex,
+		$arrowColor: #FFFFFF, //矢印のカラー
+		$arrowRotate: 45deg, //矢印の角度
+		$arrowSize: 2px, //矢印のサイズ
+		$arrowPosition: -5px, //矢印の位置調整
+		$position:'after',
+		$size: 10px //ボタンの文字サイズ
+	){
+		display: $arrowDisplay;
+		align-items: center;
+		justify-content: space-between;
+		> *:first-child{
+			width: calc(100% - #{$size} * 3);
+		}
+		&::#{$position}{
+			content: '';
+			border-top: solid $arrowSize $arrowColor;
+			border-right: solid $arrowSize $arrowColor;
+			display: inline-block;
+			padding: 0;
+			width: $size;
+			height: $size;
+			transform-origin: center;
+			transform: rotate($arrowRotate) translateX($arrowPosition) translateY(- $arrowPosition);
+			margin-left: - $arrowPosition * 3;
+		}
+	}
+
+@mixin btnStyle(
+		$btnFixed:'true', //ボタンの幅を固定にする場合はtrue　100%(親要素に依存させる)場合はfalseにする
+		$btnWidth: 300px, //ボタンの幅を固定する場合、幅のサイズを指定する
+		$btnMarginAuto: 0 auto, //ボタンのマージンを指定 $btnType:Fixedのときに0 autoでセンタリングする
+		$radius: 0,
+		$bgc:#000000, //ボタンの背景カラー
+		$color:#FFFFFF, //文字の色
+		$pad:10px, //ボタンの余白
+		$textAlign: center, //ボタン内のテキストの位置
+		$fsize: 1.2rem, //ボタンの文字サイズ
+		$opa: false, // hover時の透明度
+		$transition: true //transitionの設定
+	){
+		background-color: $bgc;
+		box-sizing: border-box;
+		border-radius: $radius;
+		color: $color;
+		font-size: $fsize;
+		padding: $pad;
+		text-align: $textAlign;
+		@if $btnFixed == 'true' {
+			max-width: $btnWidth;
+		} @else {
+			max-width: none;
+		}
+		@if $transition = true {
+			transition: $transition;
+		}
+		@if $opa = true {
+			&:hover{
+				opacity: $opa;
+			}
+		}
+	}
+
+@mixin ankerOpt($color: #FFFFFF, $deco: none ){
+	&:link,
+	&:active,
+	&:hover,
+	&:visited{
+		color: $color;
+		text-decoration: $deco;
+	}
+}
+
+
+.bw-arrow{
+	@include arrow();
+	@include btnStyle($bgc:#d80082,$radius: 8px, $btnFixed:'true', $btnWidth:200px, $opa: .5, $transition: .3s linear 0s);
+}
+
+a.bw-arrow{
+	@include ankerOpt();
+}
+
+button.bw-arrow{
+	width: 100%;
+	border: none;
+	cursor: pointer;
+}
